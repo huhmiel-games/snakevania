@@ -5,7 +5,8 @@ export default class PlayerBodies extends Phaser.GameObjects.Sprite {
     this.target = config.target;
     this.setTexture(config.key)
       .setName(config.name)
-      .setScale(0.5);
+      //.setScale(0.5)
+      .setDisplaySize(15, 15);
     
     this.scene.physics.world.enable(this);
     this.scene.add.existing(this);

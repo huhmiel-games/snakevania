@@ -88,11 +88,10 @@ export default class GameScene extends Scene {
   /**
    * 
    */
-  addBodies() {
+  addBodies(x = this.player0.inventory.savedPositionX, y = this.player0.inventory.savedPositionY) {
     const NUMBER_OF_FOLLOWERS = this.player0.inventory.eggs;
-    console.log('FOLLOWERS: ', this.player0.inventory.eggs)
     for (let i = 1; i < NUMBER_OF_FOLLOWERS; i += 1) {
-      this[`player${i}`] = new PlayerBodies(this, this.player0.inventory.savedPositionX - i, this.player0.inventory.savedPositionY, {
+      this[`player${i}`] = new PlayerBodies(this, x - i, y, {
         key: 'snakeBody',
         position: i,
         follow: i - 1,

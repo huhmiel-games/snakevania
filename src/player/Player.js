@@ -24,7 +24,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.setDepth(105)
       .setName('Player')
       .setTexture('snakeHead')
-      .setScale(0.5);
+      //.setScale(0.5)
+      .setDisplaySize(16, 16);
     this.scene.physics.world.enable(this);
     this.scene.add.existing(this);
     this.body.setCollideWorldBounds(true)
@@ -35,7 +36,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     this.inventory = {
       lifeEnergyBlock: 1,
-      eggs: 4,
+      eggs: 3,
       life: 100,
       savedPositionX: 200,
       savedPositionY: 500,
@@ -102,11 +103,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
       this.rotation = Math.atan2(this.body.velocity.y, this.body.velocity.x);
       this.flipX = false;
       if (this.direction === 'right' && this.rotation !== -Math.PI) {
-        console.log('RIGHT with angle =', this.rotation)
         this.flipY = false;
       } 
       if (this.direction === 'left' && this.rotation !== 0) {
-        console.log('LEFT with angle =', this.rotation, this.rotation === 0)
         this.flipY = true;
       }
     }

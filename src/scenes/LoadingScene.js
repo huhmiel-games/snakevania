@@ -5,6 +5,7 @@ import Constant from '../constant/gameConstant';
 import snakeHead from '../assets/snake/head.png';
 import snakeBody from '../assets/snake/body.png';
 import snakeTail from '../assets/snake/tail.png';
+import egg from '../assets/egg.png';
 
 
 
@@ -44,6 +45,7 @@ export default class LoadingScene extends Scene {
     this.load.image('snakeHead', snakeHead);
     this.load.image('snakeBody', snakeBody);
     this.load.image('snakeTail', snakeTail);
+    this.load.image('egg', egg);
 
   }
 

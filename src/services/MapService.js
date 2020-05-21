@@ -6,7 +6,7 @@ import ColliderService from './ColliderService';
 import SaveStationService from './SaveStationService';
 import CameraService from './CameraService';
 //import EnemiesService from './EnemiesService';
-//import PowerUpService from './PowerUpService';
+import PowerUpService from './PowerUpService';
 import ControlsService from './ControlsService';
 
 /**
@@ -52,40 +52,17 @@ export default class MapService {
     LayerService.addLayers(scene);
 
     DoorService.addDoors(scene);
-    // LightService.addSceneLights(scene);
     scene.player0.x = scene.player0.inventory.savedPositionX + 24;
     scene.player0.y = scene.player0.inventory.savedPositionY;
     ColliderService.addColliders(scene);
-    // PowerUpService.addPowerUp(scene);
+    PowerUpService.addPowerUp(scene);
     //EnemiesService.addEnemies(scene);
-    
-    
-    
-    
-
-    // launch special functions from the room
-    // if (scene.map.properties.callFunction && scene.map.properties.callFunction.length) {
-    //   const arr = scene.map.properties.callFunction.split(',');
-    //   arr.forEach(elm => scene[elm]());
-    // }
-
-    
 
     // CAMERA
     CameraService.handleCamera(scene);
     scene.physics.world.setBounds(0, 0, scene.map.widthInPixels, scene.map.heightInPixels);
     CameraService.setBounds(scene);
     CameraService.startFollowPlayer(scene);
-
-    // scene.children.list.forEach(elm => {
-    //   try {
-    //     if (elm.type !== 'Graphics' && elm.type !== 'Text') {
-    //       elm.setPipeline('Light2D');
-    //     }
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // });
 
     scene.time.addEvent({
       delay: 1000,
@@ -147,7 +124,6 @@ export default class MapService {
 
     //ParralaxService.addBackgrounds(scene);
     LayerService.addLayers(scene);
-    LightService.addSceneLights(scene);
     DoorService.addDoors(scene);
     EnemiesService.addEnemies(scene);
     SaveStationService.addSaveStation(scene);
