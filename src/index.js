@@ -1,32 +1,44 @@
 import Phaser from "phaser";
-import logoImg from "./assets/logo.png";
+import Constant from './constant/gameConstant';
+import LogoScene from './scenes/LogoScene';
+import LoadingScene from './scenes/LoadingScene';
+import IntroScene from './scenes/IntroScene';
+import MainMenuScene from './scenes/MainMenuScene';
+import HudScene from './scenes/HudScene';
+import GameScene from './scenes/GameScene';
+// import GameOverScene from './scenes/GameOverScene';
+// import GameEndScene from './scenes/GameEndScene';
 
 const config = {
   type: Phaser.AUTO,
-  parent: "phaser-example",
-  width: 800,
-  height: 600,
-  scene: {
-    preload: preload,
-    create: create
-  }
+  parent: "gamecanvas",
+  width: Constant.WIDTH,
+  height: Constant.HEIGHT,
+  scale: {
+    parent: 'gamecanvas',
+    // zoom: 2,
+    mode: Phaser.Scale.ScaleModes.FIT,
+    //mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
+    autoRound: true,
+  },
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: Constant.GRAVITY },
+      debug: false,
+      debugShowBody: true,
+      debugShowStaticBody: true,
+    },
+  },
+  scene: [LogoScene, LoadingScene, IntroScene, MainMenuScene, GameScene, HudScene]//, GameOverScene, GameEndScene],
 };
 
 const game = new Phaser.Game(config);
 
 function preload() {
-  this.load.image("logo", logoImg);
+
 }
 
 function create() {
-  const logo = this.add.image(400, 150, "logo");
-
-  this.tweens.add({
-    targets: logo,
-    y: 450,
-    duration: 2000,
-    ease: "Power2",
-    yoyo: true,
-    loop: -1
-  });
+  
 }
