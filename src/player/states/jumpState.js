@@ -19,7 +19,7 @@ export default class JumpState extends State {
     player.body.setGravityY(0);
 
     // Jump timer
-    console.log(100 * player.inventory.eggs)
+    console.log(player.inventory.eggs)
     this.jumpCooldownTimer = scene.time.addEvent({
       delay: 60 * player.inventory.eggs,
       callback: () => {
@@ -49,7 +49,7 @@ export default class JumpState extends State {
 
     // Jump now
     if (jump.isDown && this.isJumping) {
-      player.body.setVelocityY(-100);
+      player.body.setVelocityY(-10 * player.inventory.eggs);
     }
 
     // End of jump, Transition to fall state

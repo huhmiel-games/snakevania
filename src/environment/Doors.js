@@ -1,8 +1,4 @@
 export default class Doors extends Phaser.GameObjects.Sprite {
-  // isOpen: boolean;
-  // body;
-  // state;
-  
   constructor(scene, x, y, config) {
     super(scene, x, y, config.key);
     this.scene = scene;
@@ -14,20 +10,17 @@ export default class Doors extends Phaser.GameObjects.Sprite {
       playerY: config.playerY,
       openWith: config.openWith,
     };
-    this.setTexture('various')
-      //
-    if (config.key === 'doorBlue') this.setFrame('blueDoor_0');
-    if (config.key === 'doorGreen') this.setFrame('greenDoor_0');
-    if (config.key === 'doorRed') this.setFrame('redDoor_0');
+    //this.setTexture('various')
+    
 
     this.setDepth(107)
       .setOrigin(0, 0)
-      .setPipeline('Light2D');
     
     this.scene.physics.world.enable(this);
     this.scene.add.existing(this);
     this.body.allowGravity = false;
     this.body
+      .setSize(16, 16)
       .setVelocity(0, 0)
       .setImmovable(true);
     this.body.mass = 20;
@@ -50,20 +43,20 @@ export default class Doors extends Phaser.GameObjects.Sprite {
 
   openDoor(door, bullet) {
     if (this.isOpen) {
-      bullet.kill();
+      //bullet.kill();
       return;
     }
     this.isOpen = true;
-    bullet.kill();
+    //bullet.kill();
    // this.scene.sound.play('door', { rate: 2 });
-    this.anims.play(`open${this.state.key}`, true).on('animationcomplete', () => {
-      this.setAlpha(0.1);
-      if (this.state.side === 'left') {
-        this.x = this.x + 32;
-      } else if (this.state.side === 'right') {
-        this.x = this.x - 32;
-      }
-    });
+    // this.anims.play(`open${this.state.key}`, true).on('animationcomplete', () => {
+    //   this.setAlpha(0.1);
+    //   if (this.state.side === 'left') {
+    //     this.x = this.x + 32;
+    //   } else if (this.state.side === 'right') {
+    //     this.x = this.x - 32;
+    //   }
+    // });
   }
 
   setDoorPosition(x, y) {

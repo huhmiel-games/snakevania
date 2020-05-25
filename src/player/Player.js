@@ -6,10 +6,11 @@ import JumpState from './states/jumpState';
 import FallState from './states/fallState';
 import UpState from './states/upState';
 import HitState from './states/hitState';
+import AttackState from './states/attackState';
 
 import CameraService from "../services/CameraService";
 import Constant from '../constant/gameConstant';
-import { ACCELERATION_X_RUN, DRAG_FORCE } from '../constant/playerConstant';
+import { ACCELERATION_X_RUN, DRAG_FORCE, VENOM_FIRERATE, VENOM_VELOCITY } from '../constant/playerConstant';
 
 // import Bullets from "./weapons/Bullets";
 // import WeaponService from "../services/WeaponService";
@@ -37,12 +38,15 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.inventory = {
       lifeEnergyBlock: 1,
       eggs: 3,
-      life: 100,
-      savedPositionX: 200,
-      savedPositionY: 500,
+      eatedEggs: [],
+      life: 3,
+      savedPositionX: 52,
+      savedPositionY: 186,
       map: 'map1',
-      selectableWeapon: [],
-      bullets: false,
+      selectableMelody: [],
+      selectedMelody: 0,
+      venom: true,
+      flute: false,
       powerUp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       visitedRooms: ['map1'],
     };
@@ -55,6 +59,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
       isHit: false,
       isHitMomentum: false,
       isDead: false,
+      attackRate: 2000,
+      lastAttack: 0,
     };
 
     // The state machine managing the player
@@ -65,6 +71,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
       jump: new JumpState(),
       fall: new FallState(),
       hit: new HitState(),
+      attack: new AttackState(),
     }, [this.scene, this]);
 
     this.direction = 'right';
@@ -134,6 +141,18 @@ export default class Player extends Phaser.GameObjects.Sprite {
       }
     }
 
+    // Handle venom lifespan
+    if (this.venoms.children.entries.length) {
+      const venomArrayLength = this.venoms.children.entries.length;
+      const { now } = this.scene.time;
+      for (let i = 0; i < venomArrayLength; i += 1) {
+        const venom = this.venoms.children.entries[i];
+        console.log(venom)
+        if (venom.time + venom.lifespan < now) {
+          venom.destroy();
+        }
+      }
+    }
   }
 
   /**
@@ -164,23 +183,37 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   /**
    * Player is hit, stop the inputs and lower helth
-   * @param enemy 
    */
-  playerIsHit(enemy) {
-    console.log(enemy)
+  playerIsHit() {
     // if already hit leave
     if (this.playerState.isHit || this.playerState.isHitMomentum) {
       return;
     }
-    // flash the player sprite
-    // TODO
 
     // declare player is hit
     this.playerState.isHit = true;
     // make player invulnerable
     this.playerState.isHitMomentum = true;
     // calculate new health
-    const newLife = this.inventory.life - enemy.enemyState.damage;
+    const newLife = this.inventory.life - 1;
+    // flash the player sprite to red
+    const timer = this.scene.time.addEvent({
+      delay: 250,
+      repeat: 6,
+      callback: () => {
+        const repeat = timer.getRepeatCount();
+        this.scene.playerGroup.forEach(elm => {
+          if (!elm.isTinted && repeat) {
+            elm.setTint(0xFF0000);
+          } else {
+            elm.clearTint();
+          }
+        });
+        if (repeat === 0) {
+          this.playerState.isHitMomentum = false;
+        }
+      }
+    });
     // check if dead
     if (newLife <= 0) {
       this.playerState.isDead = true;
@@ -192,15 +225,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
       this.inventory.life = newLife;
       this.scene.events.emit('setHealth', { life: Math.round(this.inventory.life) });
     }
-
-    // return to normal state after 3s of invulnerability
-    this.scene.time.addEvent({
-      delay: 3000,
-      callback: () => {
-        this.setPipeline('PlayerFx');
-        this.playerState.isHitMomentum = false;
-      }
-    })
   }
 
   /**
@@ -208,20 +232,24 @@ export default class Player extends Phaser.GameObjects.Sprite {
    */
   playerIsDead() {
     ControlsService.disableInputKeys(this.scene);
-    const blackScreen = this.scene.add.image(0, 0, 'blackPixel')
-      .setOrigin(0, 0)
-      .setDisplaySize(this.scene.map.widthInPixels, this.scene.map.heightInPixels)
-      .setAlpha(0)
-      .setDepth(2000);
+    // const blackScreen = this.scene.add.image(0, 0, 'blackPixel')
+    //   .setOrigin(0, 0)
+    //   .setDisplaySize(this.scene.map.widthInPixels, this.scene.map.heightInPixels)
+    //   .setAlpha(0)
+    //   .setDepth(2000);
+    
+    this.scene.playerGroup.forEach(e=> e.body.checkCollision.none = true);
+    this.scene.physics.world.setBounds(0, 0, this.scene.map.widthInPixels * 2, this.scene.map.heightInPixels * 2);
 
-    this.scene.tweens.add({
-      targets: blackScreen,
-      duration: 3000,
-      alpha: 1
-    });
+    // this.scene.tweens.add({
+    //   targets: blackScreen,
+    //   duration: 3000,
+    //   alpha: 1
+    // });
     this.scene.time.addEvent({
       delay: 5000,
       callback: () => {
+        this.scene.mainMusic.stop();
         this.scene.scene.start(Constant.SCENENAME.gameOver);
       }
     });
@@ -245,8 +273,42 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
   }
 
+  /**
+   * Spit venom
+   */
   fire() {
+    if (!this.inventory.venom) {
+      return;
+    }
+    const timeNow = this.scene.time.now;
+    if (timeNow > this.playerState.lastFired) {
+      const venom = this.venoms.getFirstDead(true, this.body.x, this.body.y + 8, 'snakeShoot', null, true);
+      if (venom) {
+        this.playerState.lastFired = timeNow + VENOM_FIRERATE;
+        venom.visible = true;
+        venom.lifespan = 300;
+        venom.time = timeNow;
+        venom.anims.play('spitVenom', true);
+        venom.setDepth(99);
+        // venom sound
+        //this.scene.sound.play('venom', { volume: 0.08 });
+        if (this.direction === 'left') {
+          venom.setFlipX(true);
+          venom.body.velocity.x = -VENOM_VELOCITY;
+          return;
+        }
+        if (this.direction === 'right') {
+          venom.setFlipX(false);
+          venom.body.velocity.x = VENOM_VELOCITY;
+        }
+      }
+    }
+  }
 
+  isBodiesOnGround() {
+    const bool = this.scene.playerGroup.some(elm => elm && elm.body.blocked.down);
+    console.log(bool)
+    return bool;
   }
 
   

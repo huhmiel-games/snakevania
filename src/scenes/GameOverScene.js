@@ -4,11 +4,6 @@ import ControlsService from '../services/ControlsService';
 
 
 export default class gameOverScene extends Scene {
-  background: Phaser.GameObjects.Image;
-  position: number[];
-  lastPosition: number;
-  keys: any;
-  head: Phaser.GameObjects.Image;
   constructor() {
     super({
       key: Constant.SCENENAME.gameOver
@@ -25,7 +20,7 @@ export default class gameOverScene extends Scene {
       .setOrigin(0, 0)
       .setDisplaySize(Constant.WIDTH, Constant.HEIGHT * 2);
 
-    const gameOverText = this.add.bitmapText(Constant.WIDTH / 2, Constant.HEIGHT / 2, 'knighthawks', 'GAME OVER')
+    const gameOverText = this.add.bitmapText(Constant.WIDTH / 2, Constant.HEIGHT / 2, 'atomic', 'GAME OVER')
       .setFontSize(0)
       .setOrigin(0.5, 0.5)
       .setBlendMode(0)
@@ -36,15 +31,15 @@ export default class gameOverScene extends Scene {
       fontSize: 32
     });
 
-    this.add.bitmapText(Constant.WIDTH / 10 * 4, this.position[0], Constant.FONTNAME, ' Try again ')
+    this.add.bitmapText(Constant.WIDTH / 10 * 4, this.position[0], Constant.FONTNAME, 'Try again')
       .setOrigin(0, 0)
       .setFontSize(16);
 
-    this.add.bitmapText(Constant.WIDTH / 10 * 4, this.position[1], Constant.FONTNAME, ' Quit ')
+    this.add.bitmapText(Constant.WIDTH / 10 * 4, this.position[1], Constant.FONTNAME, 'Quit')
       .setOrigin(0, 0)
       .setFontSize(16);
 
-    this.head = this.add.image(Constant.WIDTH / 10 * 3.6, this.position[0] + 7, 'head')
+    this.head = this.add.image(Constant.WIDTH / 10 * 3.6, this.position[0] + 9, 'snakeHead')
       .setOrigin(0.5, 0.5)
       .setDisplaySize(16, 16)
       .setBlendMode(1);
@@ -71,12 +66,12 @@ export default class gameOverScene extends Scene {
     });
 
     // fading the scene from black
-    this.cameras.main.fadeIn(1000);
+    //this.cameras.main.fadeIn(1000);
     console.clear();
     console.log(this);
   }
 
-  choose(count): void {
+  choose(count) {
     if (this.lastPosition === this.position.length - 1 && count > 0) {
       this.lastPosition = 0;
     } else if (this.lastPosition === 0 && count < 0) {
@@ -84,10 +79,10 @@ export default class gameOverScene extends Scene {
     } else {
       this.lastPosition += count;
     }
-    this.head.y = this.position[this.lastPosition] + 7;
+    this.head.y = this.position[this.lastPosition] + 9;
   }
 
-  launch(): void {
+  launch() {
     if (this.lastPosition === 0) {
       this.input.keyboard.enabled = true;
       this.scene.start(Constant.SCENENAME.gameScene, { loadSavedGame: true });

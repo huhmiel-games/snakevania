@@ -29,8 +29,8 @@ export default class FallState extends State {
     const { prevState } = this.stateMachine;
 
     // Fire
-    if (fire.isDown && player.anims.currentAnim.key === 'player-jumpVertical') {
-      // player.fire();
+    if (fire.isDown) {
+      player.fire();
     }
 
     // Player is hit by enemy
@@ -62,7 +62,7 @@ export default class FallState extends State {
     // Transition to move if touching ground
     if (body.blocked.down) {
       console.log('TOUCHING GROUND')
-      run.isDown ? player.body.maxVelocity.x = 180 : player.body.maxVelocity.x = 100;
+      // run.isDown ? player.body.maxVelocity.x = 180 : player.body.maxVelocity.x = 100;
       this.gravityCooldownTimer.remove();
       player.body.setAccelerationY(0);
       player.verticalDirection = 'up';

@@ -53,5 +53,11 @@ export default class UpState extends State {
       this.stateMachine.transition('fall', this.stateMachine.state);
       return;
     }
+
+    // transition to attack if run is pressed
+    if (run.isDown) {
+      this.stateMachine.transition('attack', this.stateMachine.state);
+      return;
+    }
   }
 }

@@ -3,16 +3,24 @@ import Constant from '../constant/gameConstant';
 
 // Imports here all the needed assets
 import snakeHead from '../assets/snake/head.png';
+import snakeHeadAttack from '../assets/snake/headAttack.png';
 import snakeBody from '../assets/snake/body.png';
 import snakeTail from '../assets/snake/tail.png';
 import egg from '../assets/egg.png';
+import snakeShoot1 from '../assets/snake/snake_shoot_1.png';
+import snakeShootSpritesheet from '../assets/snake/snake_shoot_spritesheet.png';
 
+// Musics
+import snakeJazz from '../assets/music/snake_jazz.ogg';
 
 
 
 // Map
 import tiles from '../assets/tileset/tileset.png';
 import map1 from '../maps/map1.json';
+import map2 from '../maps/map2.json';
+import map3 from '../maps/map3.json';
+import map4 from '../maps/map4.json';
 
 export default class LoadingScene extends Scene {
   constructor() {
@@ -40,18 +48,37 @@ export default class LoadingScene extends Scene {
     // maps
     this.load.image('tiles', tiles);
     this.load.tilemapTiledJSON('map1', map1);
+    this.load.tilemapTiledJSON('map2', map2);
+    this.load.tilemapTiledJSON('map3', map3);
+    this.load.tilemapTiledJSON('map4', map4);
 
     // snake
     this.load.image('snakeHead', snakeHead);
+    this.load.image('snakeHeadAttack', snakeHeadAttack);
     this.load.image('snakeBody', snakeBody);
     this.load.image('snakeTail', snakeTail);
     this.load.image('egg', egg);
+    this.load.spritesheet('snakeShoot', snakeShootSpritesheet, {
+      frameWidth: 16,
+      frameHeight: 16,
+    });
+
+    // music
+    this.load.audio('snakeJazz', snakeJazz)
 
   }
 
   create() {
     // Create all anims here, ex:
+    this.anims.create({
+      key: 'spitVenom',
+      frames: this.anims.generateFrameNumbers('snakeShoot', { start: 0, end: 2, first: 0 }),
+      frameRate: 4,
+      repeat: 0,
+    });
 
+    // music
+    this.sound.add('snakeJazz', { volume: 1, loop: true });
     
   }
 

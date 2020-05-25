@@ -12,7 +12,7 @@ export default class DoorService {
     layerArray.objects.forEach((element, i) => {
       // doors pointing to the right
       if (element.properties.side === 'right') {
-        const door = new Doors(scene, element.x, element.y - 16, { //element.x + 3, element.y + 9
+        const door = new Doors(scene, element.x - 8, element.y - 24, { //element.x + 3, element.y + 9
           key: element.properties.key,
           name: element.name,
           side: element.properties.side,
@@ -33,7 +33,7 @@ export default class DoorService {
 
       // doors pointing to the left
       if (element.properties.side === 'left') {
-        const door = new Doors(scene, element.x + 8, element.y - 16, { //element.x + 13, element.y + 9
+        const door = new Doors(scene, element.x - 8, element.y - 24, { //element.x + 13, element.y + 9
           key: element.properties.key,
           name: element.name,
           side: element.properties.side,

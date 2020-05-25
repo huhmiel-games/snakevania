@@ -5,7 +5,6 @@ export default class PlayerBodies extends Phaser.GameObjects.Sprite {
     this.target = config.target;
     this.setTexture(config.key)
       .setName(config.name)
-      //.setScale(0.5)
       .setDisplaySize(15, 15);
     
     this.scene.physics.world.enable(this);
@@ -16,8 +15,7 @@ export default class PlayerBodies extends Phaser.GameObjects.Sprite {
     this.TURN_RATE = 5; // turn rate in degrees/frame
     this.history = [];
     this.HISTORY_LENGTH = 5; //this.scene.player0.inventory.eggs;
-    this.MIN_DISTANCE = 400;
-    this.MAX_DISTANCE = this.MIN_DISTANCE * 2;
+    this.MIN_DISTANCE = 10;
     this.targetMoving = false;
   }
 
@@ -49,19 +47,13 @@ export default class PlayerBodies extends Phaser.GameObjects.Sprite {
       // so that we can get this Follower to move.
       const distance = Phaser.Math.Distance.Between(this.x, this.y, t.a, t.b);
 
-      if (distance > this.MIN_DISTANCE && distance < this.MAX_DISTANCE) {
+      if (distance > this.MIN_DISTANCE ) {
         this.targetMoving = true;
       }
     }
 
     // If the distance > MIN_DISTANCE then move
     if (this.targetMoving) {
-      // if (distance < this.MIN_DISTANCE - 4) {
-      //   this.targetMoving = false;
-      //   this.body.setVelocityX(0);
-      //   this.body.setVelocityY(0);
-      //   return;
-      // }
       // Add current position to the end of the history array
       const { x, y } = this;
       if (!Number.isNaN(x) && !Number.isNaN(y)) {
@@ -75,18 +67,11 @@ export default class PlayerBodies extends Phaser.GameObjects.Sprite {
       }
 
       // Calculate the angle to the target
-      const rotation = Phaser.Math.Angle.Between(x, y, t.a, t.b);
+      const rotation = Phaser.Math.Angle.Wrap(Phaser.Math.Angle.Between(x, y, t.a, t.b));
 
       // Calculate velocity vector based on rotation and this.MAX_SPEED
       this.body.velocity.x = Math.cos(rotation) * this.SPEED;
       this.body.velocity.y = Math.sin(rotation) * this.SPEED;
-
-      // Flip the sprite
-      // if (this.scene.player0.direction === 'left') {
-      //   this.setFlipY(true);
-      // } else {
-      //   this.setFlipY(false);
-      // }
     } else {
       this.body.setVelocityX(0);
       this.body.setVelocityY(0);
@@ -116,51 +101,22 @@ export default class PlayerBodies extends Phaser.GameObjects.Sprite {
       }
       // Just set angle to target angle if they are close
       if (Math.abs(delta) < this.TURN_RATE * (Math.PI)) {
-        //console.log('here')
         this.rotation = targetAngle;
-        if (this.rotation > Math.PI) this.setFlipY(false);
-        if (this.rotation < -Math.PI) this.setFlipY(true);
+        if (this.rotation > Math.PI * 2) this.setFlipY(false);
+        if (this.rotation < -Math.PI * 2) this.setFlipY(true);
       }
     }
+  }
+
+  playerIsHit() {
+    console.log('HIT ON BODY: ', this.name)
+    this.scene.player0.playerIsHit();
   }
 
 
 
 
-  looseLife(e, bullet) {
-    bullet.destroy();
-    this.scene.sound.play('hurtBoss', { volume: 0.5 });
-    this.scene.boss0.state.life -= this.scene.player.bulletDamage;
-    this.scene.playerGroup.forEach((elm, i) => {
-      if (i < this.scene.playerGroup.length - 1) {
-        elm.setTintFill(0xDDDDDD);
-        this.scene.time.addEvent({
-          delay: 100,
-          callback: () => {
-            elm.clearTint();
-            if (this.scene && this.scene.boss0.state.life < 8000) {
-              this.color = 0x9BFF42;
-              elm.setTint(this.color);
-              this.SPEED = 45;
-            }
-            if (this.scene && this.scene.boss0.state.life < 6000) {
-              this.color = 0xFFF42D;
-              elm.setTint(this.color);
-              this.SPEED = 50;
-            }
-            if (this.scene && this.scene.boss0.state.life < 4000) {
-              this.color = 0xFF9F2D;
-              elm.setTint(this.color);
-              this.SPEED = 55;
-            }
-            if (this.scene && this.scene.boss0.state.life < 2000) {
-              this.color = 0xFF0000;
-              elm.setTint(this.color);
-              this.SPEED = 60;
-            }
-          },
-        });
-      }
-    });
+  looseLife(e) {
+    
   }
 }

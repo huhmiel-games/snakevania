@@ -45,9 +45,19 @@ export default class GameScene extends Scene {
 
     // the main player
     this.playerGroup = []
-    this.player0 = new Player(this, 200, 150, { key: 'player' })
+    this.player0 = new Player(this, 52, 156, { key: 'player' })
     this.player0.direction = 'right';
     this.playerGroup.push(this.player0);
+
+    this.player0.venoms = this.physics.add.group({
+      defaultKey: 'spitVenom',
+      maxSize: 10,
+      allowGravity: false,
+      createIfNull: true,
+    });
+
+    // set the fps to 120 for good collisions at high speed
+    //this.physics.world.setFPS(120);
 
 
     // Load the map
@@ -62,14 +72,21 @@ export default class GameScene extends Scene {
 
     // DEV: FAKE SAVE WHILE IN DEV
     this.input.on('pointerdown', ()=> {
-      this.player0.inventory.savedPositionX = this.player0.x;
-      this.player0.inventory.savedPositionY = this.player0.y;
-      this.player0.inventory.map = this.player0Position;
-      const s = JSON.stringify(this.player0.inventory);
-      localStorage.setItem(`${Constant.GAMENAME}_data`, s);
-      console.log('GAME SAVED')
+      // SAve the game
+      // this.player0.inventory.savedPositionX = this.player0.x;
+      // this.player0.inventory.savedPositionY = this.player0.y;
+      // this.player0.inventory.map = this.player0Position;
+      // const s = JSON.stringify(this.player0.inventory);
+      // localStorage.setItem(`${Constant.GAMENAME}_data`, s);
+      // console.log('GAME SAVED')
+
+      // list the bodies frames
+      const frameList = this.playerGroup.map(elm => elm.texture.key)
+      console.table(frameList)
       this.cameras.main.shake(500);
     });
+    this.mainMusic = this.sound.add('snakeJazz', { loop: true });
+    this.mainMusic.play();
   }
 
   update(time, delta) {
@@ -88,8 +105,20 @@ export default class GameScene extends Scene {
   /**
    * 
    */
-  addBodies(x = this.player0.inventory.savedPositionX, y = this.player0.inventory.savedPositionY) {
+  addBodies(x = this.player0.inventory.savedPositionX, y = this.player0.inventory.savedPositionY + 16) {    
+    // clean the bodies if needed
+    if (this.playerGroup.length) {
+      this.playerGroup.forEach((snakeBody,i) => {
+        if (i > 0) {
+          snakeBody.destroy();
+        }
+        console.log(this.playerGroup.length)
+      });
+      this.playerGroup = [this.player0];
+    }
+    // check the number of bodies
     const NUMBER_OF_FOLLOWERS = this.player0.inventory.eggs;
+    // add the bodies
     for (let i = 1; i < NUMBER_OF_FOLLOWERS; i += 1) {
       this[`player${i}`] = new PlayerBodies(this, x - i, y, {
         key: 'snakeBody',
@@ -98,7 +127,7 @@ export default class GameScene extends Scene {
         life: 500 / i,
         name: `player${i}`,
         target: this[`player${i - 1}`],
-      }).setDepth(i);
+      }).setDepth(50 + i);
       // this[`player${i}`].displayWidth = this[`player${i}`].displayWidth - i;
       // this[`player${i}`].displayHeight = this[`player${i}`].displayHeight - i;
 

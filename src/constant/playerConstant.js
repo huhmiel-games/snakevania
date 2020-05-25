@@ -12,7 +12,7 @@ export const FALL_GRAVITY_DELAY = 350;
 export const GRAVITY = 1000;
 
 
-// Bullets
-export const BULLET_VELOCITY = 400;
-export const BULLET_HITPOINT = 10;
-export const BULLET_FIRERATE = 420;
+// Venom
+export const VENOM_VELOCITY = 400;
+export const VENOM_HITPOINT = 10;
+export const VENOM_FIRERATE = 420;

@@ -6,7 +6,7 @@ import IntroScene from './scenes/IntroScene';
 import MainMenuScene from './scenes/MainMenuScene';
 import HudScene from './scenes/HudScene';
 import GameScene from './scenes/GameScene';
-// import GameOverScene from './scenes/GameOverScene';
+import GameOverScene from './scenes/GameOverScene';
 // import GameEndScene from './scenes/GameEndScene';
 
 const config = {
@@ -16,9 +16,7 @@ const config = {
   height: Constant.HEIGHT,
   scale: {
     parent: 'gamecanvas',
-    // zoom: 2,
     mode: Phaser.Scale.ScaleModes.FIT,
-    //mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
     autoRound: true,
   },
   physics: {
@@ -30,7 +28,7 @@ const config = {
       debugShowStaticBody: true,
     },
   },
-  scene: [LogoScene, LoadingScene, IntroScene, MainMenuScene, GameScene, HudScene]//, GameOverScene, GameEndScene],
+  scene: [LogoScene, LoadingScene, IntroScene, MainMenuScene, GameScene, HudScene, GameOverScene]//, GameOverScene, GameEndScene],
 };
 
 const game = new Phaser.Game(config);
