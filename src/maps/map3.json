@@ -35,7 +35,7 @@
                  "name":"door",
                  "properties":
                     {
-                     "destination":"map1",
+                     "destination":"map5",
                      "key":"door",
                      "open":true,
                      "openWith":"any",
@@ -183,7 +183,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":272,
+                 "x":544,
                  "y":496
                 }],
          "opacity":1,

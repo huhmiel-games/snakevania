@@ -17,7 +17,13 @@ export default class ColliderService {
       }
       
     }, null, scene);
-    scene.physics.add.collider(scene.player0, scene.doorGroup, (door, player) => MapService.changeRoom(scene, door, player), null, scene);
+    scene.physics.add.collider(scene.player0, scene.doorGroup, (player, door) => {
+      console.log(door, player)
+      if (player.stateMachine.state === 'attack') {
+        return;
+      }
+      MapService.changeRoom(scene, player, door);
+    }, null, scene);
 
     // Handle enemies colliders
     // scene.physics.add.collider(scene.enemyGroup, scene.solLayer, undefined, undefined, scene);

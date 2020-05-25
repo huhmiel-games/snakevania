@@ -21,6 +21,7 @@ import map1 from '../maps/map1.json';
 import map2 from '../maps/map2.json';
 import map3 from '../maps/map3.json';
 import map4 from '../maps/map4.json';
+import map5 from '../maps/map5.json';
 
 export default class LoadingScene extends Scene {
   constructor() {
@@ -51,6 +52,7 @@ export default class LoadingScene extends Scene {
     this.load.tilemapTiledJSON('map2', map2);
     this.load.tilemapTiledJSON('map3', map3);
     this.load.tilemapTiledJSON('map4', map4);
+    this.load.tilemapTiledJSON('map5', map5);
 
     // snake
     this.load.image('snakeHead', snakeHead);

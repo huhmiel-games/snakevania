@@ -36,7 +36,7 @@
  <objectgroup name="doors">
   <object id="27" name="door" gid="9" x="0" y="496" width="16" height="16">
    <properties>
-    <property name="destination" value="map1"/>
+    <property name="destination" value="map5"/>
     <property name="key" value="door"/>
     <property name="open" type="bool" value="true"/>
     <property name="openWith" value="any"/>
@@ -77,7 +77,7 @@
     <property name="key" value="egg"/>
    </properties>
   </object>
-  <object id="30" name="egg" gid="17" x="272" y="496" width="16" height="16">
+  <object id="30" name="egg" gid="17" x="544" y="496" width="16" height="16">
    <properties>
     <property name="ability" value="egg"/>
     <property name="egg" type="bool" value="true"/>
