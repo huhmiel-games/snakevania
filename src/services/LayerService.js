@@ -33,9 +33,19 @@ export default class LayerService {
       .setDepth(11);
 
     scene.backLayer = scene.map.createDynamicLayer('back', scene.tileset, 0, 0)
-      .setDepth(4);
-   
+      .setDepth(4).setScrollFactor(0.8, 1);
+
     scene.frontLayer = scene.map.createDynamicLayer('front', scene.tileset, 0, 0)
       .setDepth(107);
+
+    if (LayerService.checkIfLayerExists(scene, 'middle')) {
+      scene.middleLayer = scene.map.createDynamicLayer('middle', scene.tileset, 0, 0)
+        .setDepth(5).setScrollFactor(0.5, 1);
+    }
+
+    if (LayerService.checkIfLayerExists(scene, 'invisible')) {
+      scene.invisibleLayer = scene.map.createDynamicLayer('invisible', scene.tileset, 0, 0)
+        .setDepth(0);
+    }
   }
 }

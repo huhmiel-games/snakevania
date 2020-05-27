@@ -109,7 +109,6 @@ export default class PlayerBodies extends Phaser.GameObjects.Sprite {
   }
 
   playerIsHit() {
-    console.log('HIT ON BODY: ', this.name)
     this.scene.player0.playerIsHit();
   }
 

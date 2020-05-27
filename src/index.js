@@ -7,18 +7,19 @@ import MainMenuScene from './scenes/MainMenuScene';
 import HudScene from './scenes/HudScene';
 import GameScene from './scenes/GameScene';
 import GameOverScene from './scenes/GameOverScene';
-// import GameEndScene from './scenes/GameEndScene';
 
 const config = {
   type: Phaser.AUTO,
   parent: "gamecanvas",
   width: Constant.WIDTH,
   height: Constant.HEIGHT,
-  scale: {
-    parent: 'gamecanvas',
-    mode: Phaser.Scale.ScaleModes.FIT,
-    autoRound: true,
-  },
+  pixelArt: true,
+  zoom: 2,
+  // scale: {
+  //   parent: 'gamecanvas',
+  //   //mode: Phaser.Scale.ScaleModes.FIT,
+  //   autoRound: true,
+  // },
   physics: {
     default: 'arcade',
     arcade: {
@@ -28,7 +29,7 @@ const config = {
       debugShowStaticBody: true,
     },
   },
-  scene: [LogoScene, LoadingScene, IntroScene, MainMenuScene, GameScene, HudScene, GameOverScene]//, GameOverScene, GameEndScene],
+  scene: [LogoScene, LoadingScene, IntroScene, MainMenuScene, GameScene, HudScene, GameOverScene],
 };
 
 const game = new Phaser.Game(config);

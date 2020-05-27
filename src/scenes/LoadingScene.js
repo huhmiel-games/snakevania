@@ -9,6 +9,9 @@ import snakeTail from '../assets/snake/tail.png';
 import egg from '../assets/egg.png';
 import snakeShoot1 from '../assets/snake/snake_shoot_1.png';
 import snakeShootSpritesheet from '../assets/snake/snake_shoot_spritesheet.png';
+import saveStation from '../assets/savestation.png';
+import spike from '../assets/spike.png';
+import heart from '../assets/heart.png';
 
 // Musics
 import snakeJazz from '../assets/music/snake_jazz.ogg';
@@ -17,11 +20,24 @@ import snakeJazz from '../assets/music/snake_jazz.ogg';
 
 // Map
 import tiles from '../assets/tileset/tileset.png';
+import map0 from '../maps/map0.json';
 import map1 from '../maps/map1.json';
 import map2 from '../maps/map2.json';
 import map3 from '../maps/map3.json';
 import map4 from '../maps/map4.json';
 import map5 from '../maps/map5.json';
+import map6 from '../maps/map6.json';
+import map7 from '../maps/map7.json';
+import map8 from '../maps/map8.json';
+import map9 from '../maps/map9.json';
+import map10 from '../maps/map10.json';
+import map11 from '../maps/map11.json';
+import map12 from '../maps/map12.json';
+import map13 from '../maps/map13.json';
+import map14 from '../maps/map14.json';
+import map15 from '../maps/map15.json';
+import map16 from '../maps/map16.json';
+
 
 export default class LoadingScene extends Scene {
   constructor() {
@@ -48,11 +64,23 @@ export default class LoadingScene extends Scene {
     // Load all assets here, ex:
     // maps
     this.load.image('tiles', tiles);
+    this.load.tilemapTiledJSON('map0', map0);
     this.load.tilemapTiledJSON('map1', map1);
     this.load.tilemapTiledJSON('map2', map2);
     this.load.tilemapTiledJSON('map3', map3);
     this.load.tilemapTiledJSON('map4', map4);
     this.load.tilemapTiledJSON('map5', map5);
+    this.load.tilemapTiledJSON('map6', map6);
+    this.load.tilemapTiledJSON('map7', map7);
+    this.load.tilemapTiledJSON('map8', map8);
+    this.load.tilemapTiledJSON('map9', map9);
+    this.load.tilemapTiledJSON('map10', map10);
+    this.load.tilemapTiledJSON('map11', map11);
+    this.load.tilemapTiledJSON('map12', map12);
+    this.load.tilemapTiledJSON('map13', map13);
+    this.load.tilemapTiledJSON('map14', map14);
+    this.load.tilemapTiledJSON('map15', map15);
+    this.load.tilemapTiledJSON('map16', map16);
 
     // snake
     this.load.image('snakeHead', snakeHead);
@@ -60,6 +88,9 @@ export default class LoadingScene extends Scene {
     this.load.image('snakeBody', snakeBody);
     this.load.image('snakeTail', snakeTail);
     this.load.image('egg', egg);
+    this.load.image('saveStation', saveStation);
+    this.load.image('spike', spike);
+    this.load.image('heart', heart);
     this.load.spritesheet('snakeShoot', snakeShootSpritesheet, {
       frameWidth: 16,
       frameHeight: 16,

@@ -19,7 +19,6 @@ export default class JumpState extends State {
     player.body.setGravityY(0);
 
     // Jump timer
-    console.log(player.inventory.eggs)
     this.jumpCooldownTimer = scene.time.addEvent({
       delay: 60 * player.inventory.eggs,
       callback: () => {

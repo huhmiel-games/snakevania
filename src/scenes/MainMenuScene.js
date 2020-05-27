@@ -33,8 +33,6 @@ export default class MainMenuScene extends Scene {
       this.loadGameText = this.add.bitmapText(Constant.WIDTH / 10, this.position[0], 'atomic', ' LOAD GAME ', 16, 1)
         .setBlendMode(3).setLetterSpacing(4);
 
-      const timeGameText = this.add.bitmapText(Constant.WIDTH / 4 * 3 - 24, this.position[0] + 5, Constant.FONTNAME, ` ${totalTime} `, 10, 2);
-
       const deleteSavedGameText = this.add.bitmapText(Constant.WIDTH / 10, this.position[2], 'atomic', ' DELETE GAME ', 16, 1)
         .setBlendMode(3).setLetterSpacing(4);
     } else {
@@ -63,8 +61,6 @@ export default class MainMenuScene extends Scene {
         this.launch();
       }
     });
-    console.log(this)
-
   }
 
   choose(count) {
@@ -83,17 +79,6 @@ export default class MainMenuScene extends Scene {
     const texts = this.children.list.filter(child => child instanceof Phaser.GameObjects.BitmapText);
     texts.push(this.head);
     this.startGameScene();
-    // this.tweens.add({
-    //   targets: texts,
-    //   delay: 500,
-    //   alpha: {
-    //     getStart: () => 1,
-    //     getEnd: () => 0,
-    //   },
-    //   onComplete: () => {
-    //     this.startGameScene();
-    //   }
-    // });
   }
 
   startGameScene() {

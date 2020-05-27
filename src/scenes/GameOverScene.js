@@ -64,11 +64,6 @@ export default class gameOverScene extends Scene {
         this.launch();
       }
     });
-
-    // fading the scene from black
-    //this.cameras.main.fadeIn(1000);
-    console.clear();
-    console.log(this);
   }
 
   choose(count) {

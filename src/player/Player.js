@@ -12,11 +12,6 @@ import CameraService from "../services/CameraService";
 import Constant from '../constant/gameConstant';
 import { ACCELERATION_X_RUN, DRAG_FORCE, VENOM_FIRERATE, VENOM_VELOCITY } from '../constant/playerConstant';
 
-// import Bullets from "./weapons/Bullets";
-// import WeaponService from "../services/WeaponService";
-
-
-
 export default class Player extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, config) {
     super(scene, x, y, config.key);
@@ -25,7 +20,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
     this.setDepth(105)
       .setName('Player')
       .setTexture('snakeHead')
-      //.setScale(0.5)
       .setDisplaySize(16, 16);
     this.scene.physics.world.enable(this);
     this.scene.add.existing(this);
@@ -42,13 +36,13 @@ export default class Player extends Phaser.GameObjects.Sprite {
       life: 3,
       savedPositionX: 52,
       savedPositionY: 186,
-      map: 'map1',
+      map: 'map0',
       selectableMelody: [],
       selectedMelody: 0,
-      venom: true,
+      venom: false,
       flute: false,
       powerUp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      visitedRooms: ['map1'],
+      visitedRooms: ['map0'],
     };
 
     // Some flags about player state
@@ -80,15 +74,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     this.history = [{ a: x, b: y }];
     this.HISTORY_LENGTH = 5;
-
-    // for future player sounds
-    // this.on('animationupdate', (currentAnim) => {
-    //   // if (currentAnim.key === 'player-startJump') {
-    //   //   console.log(currentAnim)
-    //   //   this.anims.play('player-jump', true);
-    //   // }
-    // });
-    console.log(this)
   }
 
   preUpdate(time, delta) {
@@ -142,12 +127,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     // Handle venom lifespan
-    if (this.venoms.children.entries.length) {
+    if (this.venoms && this.venoms.children.entries.length) {
       const venomArrayLength = this.venoms.children.entries.length;
       const { now } = this.scene.time;
       for (let i = 0; i < venomArrayLength; i += 1) {
         const venom = this.venoms.children.entries[i];
-        console.log(venom)
         if (venom.time + venom.lifespan < now) {
           venom.destroy();
         }
@@ -232,20 +216,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
    */
   playerIsDead() {
     ControlsService.disableInputKeys(this.scene);
-    // const blackScreen = this.scene.add.image(0, 0, 'blackPixel')
-    //   .setOrigin(0, 0)
-    //   .setDisplaySize(this.scene.map.widthInPixels, this.scene.map.heightInPixels)
-    //   .setAlpha(0)
-    //   .setDepth(2000);
     
     this.scene.playerGroup.forEach(e=> e.body.checkCollision.none = true);
     this.scene.physics.world.setBounds(0, 0, this.scene.map.widthInPixels * 2, this.scene.map.heightInPixels * 2);
 
-    // this.scene.tweens.add({
-    //   targets: blackScreen,
-    //   duration: 3000,
-    //   alpha: 1
-    // });
     this.scene.time.addEvent({
       delay: 5000,
       callback: () => {
@@ -307,9 +281,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   isBodiesOnGround() {
     const bool = this.scene.playerGroup.some(elm => elm && elm.body.blocked.down);
-    console.log(bool)
     return bool;
   }
-
-  
 }

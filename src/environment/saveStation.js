@@ -14,7 +14,7 @@ export default class SaveStation extends Phaser.GameObjects.Sprite {
       save: false,
     };
 
-    this.setAlpha(0)
+    //this.setAlpha(0)
     this.scene.physics.world.enable(this);
     this.scene.add.existing(this);
     this.body.allowGravity = false;

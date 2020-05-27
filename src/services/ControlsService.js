@@ -63,7 +63,6 @@ export default class ControlsService {
    */
   static disableInputKeys(scene) {
     scene.input.keyboard.enabled = false;
-    console.log('KEYS DISABLED')
   }
 
   /**
@@ -78,6 +77,5 @@ export default class ControlsService {
       }
     });
     scene.input.keyboard.enabled = true;
-    console.log('KEYS ENABLED')
   }
 }

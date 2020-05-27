@@ -13,7 +13,7 @@ export default class SaveStationService {
     }
 
     layerArray.objects.forEach((element) => {
-      scene[element.name] = new SaveStation(scene, element.x + 32, element.y + 12, {
+      scene[element.name] = new SaveStation(scene, element.x, element.y, {
         key: element.properties.key,
         destination: element.properties.destination,
       });

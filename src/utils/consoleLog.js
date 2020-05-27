@@ -1,6 +1,6 @@
 export const consoleLog = (data) => {
   if (window.console && console.log) {
-    console.log(data);
+    //console.log(data);
   }
 };
 
@@ -18,7 +18,7 @@ export const consoleWarn = (data) => {
 
 export const consoleInfo = (data, data2) => {
   if (window.console && console.info) {
-    console.info(`%c      --- ${data} --- from ${data2}`, 'color: blue');
+    //console.info(`%c      --- ${data} --- from ${data2}`, 'color: blue');
   }
 };
 

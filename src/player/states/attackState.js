@@ -4,10 +4,6 @@ import ControlsService from '../../services/ControlsService';
 
 export default class AttackState extends State {
   enter(scene, player) {
-    // if (player.playerState.lastAttack < scene.time.now) {
-    //   this.stateMachine.transition('idle', this.stateMachine.state);
-    //   return;
-    // }
     this.attackTime = scene.time.now;
     player.playerState.lastAttack = scene.time.now + player.playerState.attackRate;
     player.setTexture('snakeHeadAttack');
@@ -38,21 +34,11 @@ export default class AttackState extends State {
     }
 
     if (player.body.maxVelocity.x === 100) {
-      console.log('here')
       player.body.maxVelocity.x *= 2;
-      
-      
     }
     const newSpeed = Math.abs(player.body.velocity.x) + 80;
     for (let i = 1; i < scene.playerGroup.length; i += 1) {
       scene.playerGroup[i].SPEED = 280;
     }
-    // scene.playerGroup.forEach(element => {
-    //   console.log(element)
-    //   element.SPEED = Math.abs(player.body.velocity.x) + 80;//280;
-    // });
-    console.log(player.body.velocity.x)
-
-    
   }
 }

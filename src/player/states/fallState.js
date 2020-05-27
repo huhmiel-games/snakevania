@@ -24,9 +24,7 @@ export default class FallState extends State {
 
   execute(scene, player) {
     const { left, right, up, down, fire, jump, run, select, pause } = scene.keys;
-    const { playerState, body, wallJumpMomentum, wallJumpSide } = player;
-    const { blockedDownTimestamp, rightWallJump, leftWallJump, isMorph } = playerState;
-    const { prevState } = this.stateMachine;
+    const { body } = player;
 
     // Fire
     if (fire.isDown) {
@@ -47,12 +45,11 @@ export default class FallState extends State {
     }
 
     // Ghost Jumping
-    const ghostJumpDelay = scene.keys.run.isDown ? 25 : 60;
-    if (blockedDownTimestamp + ghostJumpDelay > scene.time.now
+    const ghostJumpDelay = 60;
+    if (player.playerState.blockedDownTimestamp + ghostJumpDelay > scene.time.now
       && jump.isDown
       && jump.getDuration() < 250
     ) {
-      console.log('GHOST JUMP')
       this.stateMachine.transition('jump', this.stateMachine.state);
       return;
     }
@@ -61,8 +58,6 @@ export default class FallState extends State {
 
     // Transition to move if touching ground
     if (body.blocked.down) {
-      console.log('TOUCHING GROUND')
-      // run.isDown ? player.body.maxVelocity.x = 180 : player.body.maxVelocity.x = 100;
       this.gravityCooldownTimer.remove();
       player.body.setAccelerationY(0);
       player.verticalDirection = 'up';
